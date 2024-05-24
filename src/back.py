@@ -14,7 +14,6 @@ class Marqueur:
         return self._joueur
     
     def inverser(self):
-        #pour Sofyan
         self._joueur=1 if self._joueur==2 else 2
 
 class Anneau:
@@ -26,8 +25,26 @@ class Anneau:
 
 class Grille:
     def __init__(self):
-        self._plateau = [
-
+        self._plateau = [""" -1: hors plateau / -2: case morte / 0: case libre"""
+            [-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1], #0
+            [-1,-1,-1, 0,-2, 0,-2, 0,-1,-1,-1], #1
+            [-1,-1, 0,-2, 0,-2, 0,-2, 0,-1,-1], #2
+            [-1, 0,-2, 0,-2, 0,-2, 0,-2, 0,-1], #3
+            [-1,-2, 0,-2, 0,-2, 0,-2, 0,-2,-1], #4
+            [-1, 0,-2, 0,-2, 0,-2, 0,-2, 0,-1], #5
+            [ 0,-2, 0,-2, 0,-2, 0,-2, 0,-2, 0], #6
+            [-2, 0,-2, 0,-2, 0,-2, 0,-2, 0,-2], #7
+            [ 0,-2, 0,-2, 0,-2, 0,-2, 0,-2, 0], #8
+            [-2, 0,-2, 0,-2, 0,-2, 0,-2, 0,-2], #9
+            [ 0,-2, 0,-2, 0,-2, 0,-2, 0,-2, 0], #10
+            [-2, 0,-2, 0,-2, 0,-2, 0,-2, 0,-2], #11
+            [ 0,-2, 0,-2, 0,-2, 0,-2, 0,-2, 0], #12
+            [-1, 0,-2, 0,-2, 0,-2, 0,-2, 0,-1], #13
+            [-1,-2, 0,-2, 0,-2, 0,-2, 0,-2,-1], #14
+            [-1, 0,-2, 0,-2, 0,-2, 0,-2, 0,-1], #15
+            [-1,-1, 0,-2, 0,-2, 0,-2, 0,-1,-1], #16
+            [-1,-1,-1, 0,-2, 0,-2, 0,-1,-1,-1], #17
+            [-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1], #18
             ]
 
     def deplacerAnneau(self,nouveauX,nouveauY):
@@ -58,7 +75,6 @@ class Grille:
         """
             IN : Les coordonnées d'un anneau
         """
-        #C'est à Adam le GOAT de le faire
         pass
 
     def alignement(self):
@@ -85,7 +101,7 @@ class Jeu:
             return joueur.getAnneauRetire()==3
     
     def boucleDeJeu(self):
-        #selection des paramètres (Blitz, etc.)
+        #selection des paramètres (Blitz, etc.) dans les menus
         #création de la grille
         plateau=Grille()
         #chaque joueur place ses 5 anneaux
