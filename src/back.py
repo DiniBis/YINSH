@@ -47,12 +47,13 @@ class Grille:
             [-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1], #18
             ]
 
-    def deplacerAnneau(self,nouveauX,nouveauY):
+    def deplacerAnneau(self,joueur,ancienX,ancienY,nouveauX,nouveauY):
         """
             IN : Un pion et ses coordonnées
             Modifie l'emplacement d'un anneau aux coordonnées rentrées (si elles sont valides)
         """
         #Met un marqueur à l'ancien emplacement de l'anneau
+        self._plateau[ancienX][ancienY]=Marqueur(joueur)
         #Si un anneau a des marqueurs autour de lui il peut aller jusqu'à après les marqueurs suivants
             #Si le marqueur est passé au dessus d'un ou plusieurs marqueurs ils sont retournés
         #NO CODE:
@@ -71,6 +72,7 @@ class Grille:
         #Envoyer la liste des positions à l'affichage,
         #Récupérer l'emplacement qui a été choisi parmis la liste,
         #Effectuer le déplacement et si des marqueurs ont été survolés, les retourner avec marqueur.inverser
+            #parcourir tous les emplacements entre initial / final, si c'est un marqueur: retourner
         pass
 
     def placerAnneau(self,joueur,x,y):
@@ -78,7 +80,9 @@ class Grille:
             IN : Les coordonnées d'un anneau
         """
         #Si les coordonnées sont valides:
+        if self._plateau[x][y]==0:
             #Placer l'anneau
+            self._plateau[x][y]=Anneau(joueur)
         #Sinon, tant que les coordonnées ne sont pas valides:
             #demander à nouveau les coordonnées
         pass
@@ -109,7 +113,7 @@ class Grille:
                                     alignementJ2+=1
                         else:
                             compteur=0
-                #Si c'est une colonne paire, commencer à 1
+                #Si c'est une colonne impaire, commencer à 1
                 else:
                     for ligne in range(1, taille_ligne, 2):
                         if self._plateau[ligne][colonne]==Marqueur:
@@ -141,7 +145,7 @@ class Grille:
                                     else:
                                         compteur=0
             #Vérification diagonale ↖↘
-            for ligne in range(taille_ligne,0,-1):
+            for ligne in range(taille_ligne):
                 compteur=0
                 for colonne in range(taille_colonne,0,-1):
                     #Si on tombe sur un marqueur du joueur
@@ -150,8 +154,8 @@ class Grille:
                             compteur+=1
                             #Si une suite est lancée
                             while compteur>0:
-                                if ligne-compteur<0 and colonne-compteur<0:
-                                    if self._plateau[ligne-compteur][colonne-compteur]==Marqueur and self._plateau[ligne-compteur][colonne-compteur].getJoueur()==joueur:
+                                if ligne+compteur<taille_ligne and colonne-compteur<0:
+                                    if self._plateau[ligne+compteur][colonne-compteur]==Marqueur and self._plateau[ligne+compteur][colonne-compteur].getJoueur()==joueur:
                                         compteur+=1
                                         if compteur>=5 and joueur==1:
                                             alignementJ1+=1
@@ -163,6 +167,7 @@ class Grille:
                 #Le joueur qui possède ces 5 marqueurs les retire ainsi qu'un de ses anneaux (il choisit)
             #S'il y en a plus :
                 #Le joueur qui selectionne l'alignement à retirer, ainsi qu'un seul de ses anneaux
+            #ces dernières options sûrement dans une nouvelle fonction, où l'utilisateur selectionne une case et on supprime tous les marqueurs si c'est bien un alignement
         pass
 
 class Jeu:
