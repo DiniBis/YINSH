@@ -7,9 +7,11 @@
 - Classique:
     Si un joueur récupère 3 anneaux, il gagne la partie
 - Blitz:
-    Si un joueru récupère 1 anneau, il gagne la partie
+    Si un joueur récupère 1 anneau, il gagne la partie
 
 - Contre un bot ou un joueur (localement)
+
+## Menus / Interface utilisateur
 
 ## Plateau
 

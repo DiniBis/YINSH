@@ -47,45 +47,79 @@ class Grille:
             [-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1], #18
             ]
 
-    def deplacerAnneau(self,joueur,ancienX,ancienY,nouveauX,nouveauY):
+    def deplacementPossible(self,joueur,x,y):
         """
-            IN : Un pion et ses coordonnées
-            Modifie l'emplacement d'un anneau aux coordonnées rentrées (si elles sont valides)
+            IN : Un anneau et ses coordonnées
+            OUT : La liste des emplacements de déplacements possibles, False si ce n'est pas une case valide
         """
-        #Met un marqueur à l'ancien emplacement de l'anneau
-        self._plateau[ancienX][ancienY]=Marqueur(joueur)
-        #Si un anneau a des marqueurs autour de lui il peut aller jusqu'à après les marqueurs suivants
-            #Si le marqueur est passé au dessus d'un ou plusieurs marqueurs ils sont retournés
-        #NO CODE:
+        largeur=len(self._plateau[0])
+        hauteur=len(self._plateau)
         #Selection de l'anneau à déplacer (la selection doit être un anneau)
-        #Enregistrer la position pour y mettre un marqueur du joueur (retirer l'anneau)
-        #Regarder à :
-            #directions voisines
-            #en enregistrant si l'un de ses emplacements est un marqueur voisin
-        #Pour les directions n'ayant pas de voisin direct:
-            #Continuer dans la direction jusqu'à ce que la case soit -1, un autre objet ou la limite
-            #Enregistrer les emplacements possibles dans une liste
-        #Pour les cases étant un voisin direct:
-            #Continuer dans la direction du voisin direct jusqu'à ce qu'il y ait autre chose qu'un anneau
-            #La dernière case après la suite d'anneaux est ajouté à la liste des emplacements possibles
-        #La liste des emplacements possibles étant complète on regarde si l'emplacement séléctionné fait parti des emplacements possibles, sinon redemander l'input
-        #Envoyer la liste des positions à l'affichage,
-        #Récupérer l'emplacement qui a été choisi parmis la liste,
-        #Effectuer le déplacement et si des marqueurs ont été survolés, les retourner avec marqueur.inverser
+        if self._plateau[x][y]==Anneau and self._plateau[x][y].getJoueur()==joueur:
+            liste=[]
+            #Regarder aux directions voisines: ↙↓↘ ↖↑↗
+            for var_x in range(-1,1):
+                for var_y in range(-1,1):
+                    #dans les plages du plateau
+                    if 0<= x+var_x <= hauteur and 0 <= y+var_y <= largeur:
+                        #si c'est une case disponible
+                        if self._plateau[x+var_x][y+var_y]==self._plateau==0:
+                            #l'ajouter à la liste 
+                            liste.append([x+var_x][y+var_y])
+                            #Continuer dans la direction jusqu'à ce que la case soit -1, un autre objet ou la limite
+                            suite=2
+                            while 0<=x+var_x*suite<=hauteur and 0<=y+var_y*suite<=largeur and self._plateau[x+var_x*suite][y+var_y*suite]==0:
+                                liste.append([x+var_x*suite][y+var_y*suite])
+                                suite+=1
+                        #si c'est un marqueur
+                        if self._plateau[x+var_x][y+var_y]==Marqueur:
+                            #Continuer dans la direction du voisin direct jusqu'à ce qu'il y ait autre chose qu'un marqueur
+                            suite=2
+                            while 0<=x+var_x*suite<=hauteur and 0<=y+var_y*suite<=largeur and self._plateau[x+var_x*suite][y+var_y*suite]==Marqueur:
+                                suite+=1
+                            #La dernière case après la suite d'anneaux est ajoutée à la liste des emplacements possibles
+                            liste.append([x+var_x*suite][y+var_y*suite])
+        else:
+            #La case choisie n'est pas un anneau du joueur
+            return False
+
+    def deplacerAnneau(self,joueur,liste,ancienX,ancienY,nouveauX,nouveauY):
+        """
+            IN : L'emplacement vers lequel l'anneau se déplace
+            Modifie l'emplacement d'un anneau aux coordonnées rentréees (si elles sont valides)
+            Effectue le retournement des marqueurs entre les 2 emplacements
+        """
+        #Si le nouvel emplacement est une case possible (fait partie de la liste)
+        n_emplacement=[nouveauX][nouveauY]
+        if n_emplacement in liste:
+            #Met un marqueur à l'ancien emplacement de l'anneau
+            self._plateau[ancienX][ancienY]=Marqueur(joueur)
+            #Effectuer le déplacement
+            self._plateau[nouveauX][nouveauY]=Anneau(joueur)
+            #Connaître la direction pour aller de l'ancien au nouvel emplacement
+            pas_x=-1 if (nouveauX - ancienX) < 0 else 1
+            pas_y=-1 if (nouveauY - ancienY) < 0 else 1
             #parcourir tous les emplacements entre initial / final, si c'est un marqueur: retourner
+            for ligne in range(ancienX,nouveauX,pas_x):
+                for colonne in range(ancienY,nouveauY,pas_y):
+                    if self._plateau[ligne][colonne]==Marqueur:
+                        self._plateau[ligne][colonne].inverser()
         pass
 
     def placerAnneau(self,joueur,x,y):
         """
             IN : Les coordonnées d'un anneau
+            OUT : False si l'emplacement n'est pas valide
+            Effectue le placement d'un anneau si l'emplacement choisi est valide
         """
         #Si les coordonnées sont valides:
         if self._plateau[x][y]==0:
             #Placer l'anneau
             self._plateau[x][y]=Anneau(joueur)
         #Sinon, tant que les coordonnées ne sont pas valides:
-            #demander à nouveau les coordonnées
-        pass
+        else:
+            #préviens si le placement n'a pas été fait pour que l'anneau soit placé ailleurs
+            return False
 
     def alignement(self):
         """
