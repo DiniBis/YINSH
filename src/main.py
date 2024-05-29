@@ -5,7 +5,7 @@ import MainMenu #import des fonctions du MainMenu différent pour éviter les er
 #récupérer les infos des menus (blitz,multi,CPU)
 if MainMenu.mode_blitz == true:
         blitz = true
-if MainMenu.nombrejoueurs == 1:
+if MainMenu.nombrejoueurs == 2:
         boucle_de_jeu()
 
 #Pour 2 joueurs sur une même machine
