@@ -77,8 +77,9 @@ class Grille:
                             suite=2
                             while 0<=x+var_x*suite<=hauteur and 0<=y+var_y*suite<=largeur and self._plateau[x+var_x*suite][y+var_y*suite]==Marqueur:
                                 suite+=1
-                            #La dernière case après la suite d'anneaux est ajoutée à la liste des emplacements possibles
+                            #La dernière case après la suite de marqueurs est ajoutée à la liste des emplacements possibles
                             liste.append([x+var_x*suite][y+var_y*suite])
+            return liste
         else:
             #La case choisie n'est pas un anneau du joueur
             return False
@@ -205,33 +206,11 @@ class Grille:
         pass
 
 class Jeu:
-    def __init__(self):
-        self._blitz=False
+    def __init__(self,blitz):
+        pass
 
     def victoire(slef,blitz,joueur):
         if blitz==True:
             return joueur.getAnneauRetire()==1
         else:
             return joueur.getAnneauRetire()==3
-    
-    def boucleDeJeu(self):
-        #selection des paramètres (Blitz, etc.) dans les menus
-        #création de la grille
-        plateau=Grille()
-        #chaque joueur place ses 5 anneaux
-        tourJoueur=1
-        for i in range(5):
-            #INPUT de X et Y par le click
-            x=0 #prendre l'input x du joueur
-            y=0 #prendre l'input y du joueur
-            plateau.placerAnneau(tourJoueur,x,y)
-            tourJoueur=1 if tourJoueur==2 else 2
-        #boucle principale
-        while self.victoire(self._blitz,tourJoueur)==False:
-            #INPUT de X et Y par le click
-            #Le joueur du tour choisis un anneau qui sera déplacé
-            #Placer un marqueur à X et Y
-            #INPUT de nouvX et nouvY (un emplacement valide pour le déplacement de l'anneau) par le click
-            #Regarder s'il y a un alignement
-            plateau.alignement()
-        pass
