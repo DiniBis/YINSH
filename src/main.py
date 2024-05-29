@@ -3,7 +3,8 @@ from front import * #import de toutes les fonctions d'affichage
 
 #récupérer les infos des menus (blitz,multi,CPU)
 
-def boucle_de_jeu(blitz,multi,CPU):
+#Pour 2 joueurs sur une même machine
+def boucle_de_jeu(blitz):
         jeu=Jeu(blitz)
         #création de la grille
         plateau=Grille()
@@ -13,10 +14,15 @@ def boucle_de_jeu(blitz,multi,CPU):
             #INPUT de X et Y par le clic
             x=0 #prendre l'input x du joueur
             y=0 #prendre l'input y du joueur
-            plateau.placerAnneau(tourJoueur,x,y)
+            est_place=plateau.placerAnneau(tourJoueur,x,y)
+            while est_place==False:
+                #Tant que le pion n'est pas placé, demander à nouveau
+                x=0
+                y=0
+                est_place=plateau.placerAnneau(tourJoueur,x,y)
             tourJoueur=1 if tourJoueur==2 else 2
         #boucle principale
-        while jeu.victoire(jeu._blitz,tourJoueur)==False:
+        while jeu.victoire(jeu.blitz,tourJoueur)==False:
             #INPUT de X et Y par le clic
             x=0 #prendre l'input x du joueur
             y=0 #prendre l'input y du joueur
@@ -30,3 +36,5 @@ def boucle_de_jeu(blitz,multi,CPU):
             plateau.alignement()
             tourJoueur=1 if tourJoueur==2 else 2
         return tourJoueur #si la condition de victoire est remplie, envoyer le joueur du tour pour l'écran de fin
+
+# Pour affronter un bot

@@ -1,10 +1,11 @@
 class Joueur:
-    def __init__(self):
+    def __init__(self,numero):
         #Compteur d'anneaux retirés
-        self._anneauRetire=0
+        self.anneauRetire=0
+        self.numero=numero
     
     def getAnneauRetire(self):
-        return self._anneauRetire
+        return self.anneauRetire
 
 class Marqueur:
     def __init__(self,joueur):
@@ -207,7 +208,7 @@ class Grille:
 
 class Jeu:
     def __init__(self,blitz):
-        pass
+        self.blitz=blitz
 
     def victoire(slef,blitz,joueur):
         if blitz==True:
