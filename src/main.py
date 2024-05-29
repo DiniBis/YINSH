@@ -1,7 +1,12 @@
 from back import * #import de toutes les fonctions en back
 from front import * #import de toutes les fonctions d'affichage
+import MainMenu #import des fonctions du MainMenu différent pour éviter les erreurs
 
 #récupérer les infos des menus (blitz,multi,CPU)
+if MainMenu.mode_blitz == true:
+        blitz = true
+if MainMenu.nombrejoueurs == 1:
+        boucle_de_jeu()
 
 #Pour 2 joueurs sur une même machine
 def boucle_de_jeu(blitz):
