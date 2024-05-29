@@ -72,9 +72,11 @@ while True:
                 for bouton in boutons_jouer:
                     if bouton["rect"].collidepoint(pos_souris):
                         if bouton["label"] == "1 joueur":
-                            pass
+                            nombre_joueurs = 1
+                            exec(main.py)
                         elif bouton["label"] == "2 joueurs":
-                            pass
+                            nombre_joueurs = 2
+                            exec(main.py)
                         elif bouton["label"] == "Retour":
                             menu_actuel = "principal"
             elif menu_actuel == "options":
