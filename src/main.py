@@ -27,7 +27,7 @@ def boucle_de_jeu():
             est_place=plateau.placerAnneau(tourJoueur,x,y)
         tourJoueur=1 if tourJoueur==2 else 2
     #boucle principale
-    while jeu.victoire(jeu.blitz,tourJoueur)==False:
+    while jeu.victoire(plateau.anneau_retiréJ1, plateau.anneau_retiréJ2, blitz)==False:
         #INPUT de X et Y par le clic
         x=0 #prendre l'input x du joueur
         y=0 #prendre l'input y du joueur
@@ -44,9 +44,25 @@ def boucle_de_jeu():
             x, y = 0, 0
             res=plateau.deplacerAnneau(tourJoueur,liste,x,y,nouv_x,nouv_y)
         #Regarder s'il y a un alignement
-        plateau.alignement()
+        tableau_alignement=plateau.alignement()
+        #Si des alignements sont enregistrés
+        if len(tableau_alignement)>0:
+            res=jeu.retirer_alignement(tableau_alignement, x, y, False)
+            #res est le numéro du joueur qui doit retirer son anneau
+            if res==1:
+                #prendre un input de joueur et si c'est l'un de ses anneaux le retirer:
+                x, y = 0, 0
+                if plateau._plateau[x][y]==Anneau and plateau._plateau[x][y].getJoueur()==1:
+                    plateau._plateau[x][y]=0
+                    plateau.anneau_retiréJ1+=1
+            elif res==2:
+                #idem pour J2
+                x, y = 0, 0
+                if plateau._plateau[x][y]==Anneau and plateau._plateau[x][y].getJoueur()==2:
+                    plateau._plateau[x][y]=0
+                    plateau.anneau_retiréJ2+=1
         tourJoueur=1 if tourJoueur==2 else 2
-    return tourJoueur #si la condition de victoire est remplie, envoyer le joueur du tour pour l'écran de fin
+    return plateau.anneau_retiréJ1, plateau.anneau_retiréJ2 #si la condition de victoire est remplie, envoyer les resultat pour l'écran de fin
 
 # Pour affronter un bot
 def versus_cpu():
@@ -80,7 +96,10 @@ def versus_cpu():
         #INPUT de nouvX et nouvY (un emplacement valide pour le déplacement de l'anneau) par le clic
         nouv_x=0 #prendre l'input x du joueur
         nouv_y=0 #prendre l'input y du joueur
-        plateau.deplacerAnneau(tourJoueur,liste,x,y,nouv_x,nouv_y)
+        res=plateau.deplacerAnneau(tourJoueur,liste,x,y,nouv_x,nouv_y)
+        while res==False:
+            x, y = 0, 0
+            res=plateau.deplacerAnneau(tourJoueur,liste,x,y,nouv_x,nouv_y)
         #Regarder s'il y a un alignement
         tableau_alignement=plateau.alignement()
         #Si des alignements sont enregistrés
@@ -93,4 +112,4 @@ def versus_cpu():
         elif tourJoueur==2 and len(tableau_alignement)>0:
             jeu.retirer_alignement(tableau_alignement, x, y, True)
         tourJoueur=1 if tourJoueur==2 else 2
-    return tourJoueur #si la condition de victoire est remplie, envoyer le joueur du tour pour l'écran de fin
+    return plateau.anneau_retiréJ1, plateau.anneau_retiréJ2 #si la condition de victoire est remplie, envoyer les resultat pour l'écran de fin
