@@ -3,6 +3,11 @@ import sys
 
 pygame.init()
 
+
+
+
+
+
 largeur_fenetre = 800
 hauteur_fenetre = 600
 
@@ -34,7 +39,7 @@ boutons_jouer = [
 ]
 
 mode_blitz = False
-
+nombre_joueurs = 1
 boutons_options = [
     {"label": f"Mode Blitz: {'oui' if mode_blitz else 'non'}", "rect": pygame.Rect(largeur_fenetre // 2 - 150, hauteur_fenetre // 2 - 30, 300, 50)},
     {"label": "Aide", "rect": pygame.Rect(largeur_fenetre // 2 - 100, hauteur_fenetre // 2 + 30, 200, 50)},
@@ -42,6 +47,9 @@ boutons_options = [
 ]
 
 menu_actuel = "principal"
+
+def if_blitz():
+    return mode_blitz
 
 def afficher_boutons(boutons):
     for bouton in boutons:
@@ -72,11 +80,13 @@ while True:
                 for bouton in boutons_jouer:
                     if bouton["rect"].collidepoint(pos_souris):
                         if bouton["label"] == "1 joueur":
-                            nombre_joueurs = 1
+                            nombre_joueurs= 1
                             exec(open("./main.py").read())
+                            if_blitz()
                         elif bouton["label"] == "2 joueurs":
-                            nombre_joueurs = 2
+                            nombre_joueurs= 2
                             exec(open("./main.py").read())
+                            if_blitz()
                         elif bouton["label"] == "Retour":
                             menu_actuel = "principal"
             elif menu_actuel == "options":
@@ -92,6 +102,7 @@ while True:
 
     fenetre.fill(blanc)
 
+
     if menu_actuel == "principal":
         fenetre.blit(texte_titre, rect_texte_titre)
         afficher_boutons(boutons_principal)
@@ -99,5 +110,6 @@ while True:
         afficher_boutons(boutons_jouer)
     elif menu_actuel == "options":
         afficher_boutons(boutons_options)
+
 
     pygame.display.flip()
