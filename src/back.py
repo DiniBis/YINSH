@@ -50,6 +50,8 @@ class Grille:
             [-1,-1,-1, 0,-2, 0,-2, 0,-1,-1,-1], #17
             [-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1], #18
             ]
+        self.anneau_retiréJ1=0
+        self.anneau_retiréJ2=0
 
     def deplacementPossible(self,joueur,x,y):
         """
@@ -225,6 +227,7 @@ class Grille:
             for positions in alignement:
                 self._plateau[positions[0]][positions[1]]=0
             #Le joueur à qui appartenait le marqueur sélectionne un anneau à retirer
+            return joueur
         #S'il appartient à un CPU
         if CPU==True:
             #Trouver un alignement appartenant au CPU
@@ -240,19 +243,25 @@ class Grille:
                 for colonne in range (len(self._plateau[0])):
                     if self._plateau[ligne][colonne]==Anneau and self._plateau[ligne][colonne].getJoueur()==2:
                         #Augmenter le compteur d'anneaux retirés du CPU
+                        self.anneau_retiréJ2+=1
                         self._plateau[ligne][colonne]=0
-            pass
 
 class Jeu:
     def __init__(self,blitz):
         self.blitz=blitz
-
-    
-    def victoire(slef,blitz,joueur):
+  
+    def victoire(alignementJ1,alignementJ2,blitz):
         if blitz==True:
-            return joueur.getAnneauRetire()==1
+            if alignementJ1>0:
+                return 1
+            elif alignementJ2>0:
+                return 2
         else:
-            return joueur.getAnneauRetire()==3
+            if alignementJ1>2:
+                return 1
+            elif alignementJ2>2:
+                return 2
+        return False
         
 def coordonnee_alea(max_x,max_y):
     """
