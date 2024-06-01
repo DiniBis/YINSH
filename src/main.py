@@ -43,3 +43,44 @@ def boucle_de_jeu(blitz):
         return tourJoueur #si la condition de victoire est remplie, envoyer le joueur du tour pour l'écran de fin
 
 # Pour affronter un bot
+def versus_cpu():
+    jeu=Jeu(blitz)
+    #création de la grille
+    plateau=Grille()
+    #chaque joueur place ses 5 anneaux
+    tourJoueur=1
+    for i in range(10):
+        #entrée des coordonnées par le joueur ou le bot
+        x, y = (0, 0) if tourJoueur == 1 else coordonnee_alea(len(plateau._plateau), len(plateau._plateau[0]))
+        est_place=plateau.placerAnneau(tourJoueur,x,y)
+        while est_place==False:
+            #Tant que le pion n'est pas placé, demander à nouveau
+            if tourJoueur==1:
+                x=0 #prendre l'input x du joueur
+                y=0 #prendre l'input y du joueur
+            else:
+                x, y = coordonnee_alea(len(plateau._plateau),len(plateau._plateau[0]))
+            est_place=plateau.placerAnneau(tourJoueur,x,y)
+        tourJoueur=1 if tourJoueur==2 else 2
+    #boucle principale
+    while jeu.victoire(jeu.blitz,tourJoueur)==False:
+        #entrée des coordonnées par le joueur ou le bot
+        x, y = (0, 0) if tourJoueur == 1 else coordonnee_alea(len(plateau._plateau), len(plateau._plateau[0]))
+        #Le joueur du tour choisis un anneau qui sera déplacé
+        liste=plateau.deplacementPossible(tourJoueur,x,y)
+        while liste==False:
+            x, y = (0, 0) if tourJoueur == 1 else coordonnee_alea(len(plateau._plateau), len(plateau._plateau[0]))
+            liste=plateau.deplacementPossible(tourJoueur,x,y)
+        #INPUT de nouvX et nouvY (un emplacement valide pour le déplacement de l'anneau) par le clic
+        nouv_x=0 #prendre l'input x du joueur
+        nouv_y=0 #prendre l'input y du joueur
+        plateau.deplacerAnneau(tourJoueur,liste,x,y,nouv_x,nouv_y)
+        #Regarder s'il y a un alignement
+        tableau_alignement=plateau.alignement()
+        #Si des alignements sont enregistrés
+        if tourJoueur==1 and len(tableau_alignement)>0:
+            jeu.retirer_alignement(tableau_alignement, x, y, False)
+        elif tourJoueur==2 and len(tableau_alignement)>0:
+            jeu.retirer_alignement(tableau_alignement, x, y, True)
+        tourJoueur=1 if tourJoueur==2 else 2
+    return tourJoueur #si la condition de victoire est remplie, envoyer le joueur du tour pour l'écran de fin
