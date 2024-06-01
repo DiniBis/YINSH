@@ -69,7 +69,7 @@ def versus_cpu():
             est_place=plateau.placerAnneau(tourJoueur,x,y)
         tourJoueur=1 if tourJoueur==2 else 2
     #boucle principale
-    while jeu.victoire(jeu.blitz,tourJoueur)==False:
+    while jeu.victoire(plateau.anneau_retiréJ1, plateau.anneau_retiréJ2, blitz)==False:
         #entrée des coordonnées par le joueur ou le bot
         x, y = (0, 0) if tourJoueur == 1 else coordonnee_alea(len(plateau._plateau), len(plateau._plateau[0]))
         #Le joueur du tour choisis un anneau qui sera déplacé
@@ -85,7 +85,11 @@ def versus_cpu():
         tableau_alignement=plateau.alignement()
         #Si des alignements sont enregistrés
         if tourJoueur==1 and len(tableau_alignement)>0:
-            jeu.retirer_alignement(tableau_alignement, x, y, False)
+            res=jeu.retirer_alignement(tableau_alignement, x, y, False)
+            if res!=False:
+                #res est le numéro du joueur qui doit retirer son anneau
+                #prendre un input de joueur, si c'est l'un de ses anneaux:
+                    plateau.anneau_retiréJ1+=1
         elif tourJoueur==2 and len(tableau_alignement)>0:
             jeu.retirer_alignement(tableau_alignement, x, y, True)
         tourJoueur=1 if tourJoueur==2 else 2
