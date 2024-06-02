@@ -68,15 +68,19 @@ def grille_to_window_coords(ligne, colonne):
 
 
 def clic():
-        for event in pygame.event.get():
-            pygame.event.clear(eventtype= pygame.MOUSEBUTTONDOWN)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+    x, y = 0, 0
+    for event in pygame.event.get():
+        pygame.event.clear(eventtype= pygame.MOUSEBUTTONDOWN)
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
                 mouse_x, mouse_y = event.pos
                 x = (mouse_x - plateau_x) // case_width
                 y = (mouse_y - plateau_y) // case_height
-                if x <=11 and y <= 19:
-                    print(x,y)
-                    return y,x
+
+    if 0 <= y <= 19 and 0 <= x <= 11:
+        return y,x
+    else:
+        return 0, 0
