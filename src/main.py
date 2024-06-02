@@ -2,11 +2,6 @@ from back import * #import de toutes les fonctions en back
 from front import * #import de toutes les fonctions d'affichage
 import MainMenu #import des fonctions du MainMenu différent pour éviter les erreurs
 
-#récupérer les infos des menus (blitz,multi,CPU)
-if MainMenu.mode_blitz == true:
-    blitz = true
-if MainMenu.nombrejoueurs == 2:
-    boucle_de_jeu()
 
 #Pour 2 joueurs sur une même machine
 def boucle_de_jeu():
@@ -52,13 +47,13 @@ def boucle_de_jeu():
             if res==1:
                 #prendre un input de joueur et si c'est l'un de ses anneaux le retirer:
                 x, y = 0, 0
-                if plateau._plateau[x][y]==Anneau and plateau._plateau[x][y].getJoueur()==1:
+                if isinstance(plateau._plateau[x][y],Anneau) and plateau._plateau[x][y].getJoueur()==1:
                     plateau._plateau[x][y]=0
                     plateau.anneau_retiréJ1+=1
             elif res==2:
                 #idem pour J2
                 x, y = 0, 0
-                if plateau._plateau[x][y]==Anneau and plateau._plateau[x][y].getJoueur()==2:
+                if isinstance(plateau._plateau[x][y],Anneau) and plateau._plateau[x][y].getJoueur()==2:
                     plateau._plateau[x][y]=0
                     plateau.anneau_retiréJ2+=1
         tourJoueur=1 if tourJoueur==2 else 2
@@ -108,9 +103,15 @@ def versus_cpu():
             if res==1:
                 #prendre un input de joueur et si c'est l'un de ses anneaux le retirer:
                 x, y = 0, 0
-                if plateau._plateau[x][y]==Anneau and plateau._plateau[x][y].getJoueur()==1:
+                if isinstance(plateau._plateau[x][y],Anneau) and plateau._plateau[x][y].getJoueur()==1:
                     plateau._plateau[x][y]=0
                     plateau.anneau_retiréJ1+=1
             #pas d'opérations pour le CPU ici, les actions sont déjà réalisées dans la fonction
         tourJoueur=1 if tourJoueur==2 else 2
     return plateau.anneau_retiréJ1, plateau.anneau_retiréJ2 #si la condition de victoire est remplie, envoyer les resultat pour l'écran de fin
+
+#récupérer les infos des menus (blitz,multi,CPU)
+if MainMenu.mode_blitz == True:
+    blitz = True
+if MainMenu.nombrejoueurs == 2:
+    boucle_de_jeu()
