@@ -3,17 +3,12 @@ import sys
 
 pygame.init()
 
-
-
-
-
-
 largeur_fenetre = 800
 hauteur_fenetre = 600
 
 fenetre = pygame.display.set_mode((largeur_fenetre, hauteur_fenetre))
 
-pygame.display.set_caption("Yinsh")
+pygame.display.set_caption("Yinsh 2049")
 
 blanc = (255, 255, 255)
 noir = (0, 0, 0)
@@ -81,12 +76,14 @@ while True:
                     if bouton["rect"].collidepoint(pos_souris):
                         if bouton["label"] == "1 joueur":
                             nombre_joueurs= 1
-                            exec(open("./main.py").read())
+                            exec(open("main.py").read())
                             if_blitz()
+                            sys.exit()
                         elif bouton["label"] == "2 joueurs":
                             nombre_joueurs= 2
-                            exec(open("./main.py").read())
+                            exec(open("main.py").read())
                             if_blitz()
+                            sys.exit()
                         elif bouton["label"] == "Retour":
                             menu_actuel = "principal"
             elif menu_actuel == "options":
