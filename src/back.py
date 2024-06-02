@@ -176,7 +176,7 @@ class Grille:
                         compteur+=1
                         #Si une suite est lancée
                         while compteur>0:
-                            if ligne+compteur<taille_ligne and colonne+compteur<taille_colonne:
+                            if ligne+compteur<=taille_ligne and colonne+compteur<=taille_colonne:
                                 if self._plateau[ligne+compteur][colonne+compteur]==Marqueur and self._plateau[ligne+compteur][colonne+compteur].getJoueur()==joueur:
                                     ligne_alignement.append([ligne,colonne])
                                     compteur+=1
@@ -194,7 +194,7 @@ class Grille:
                         compteur+=1
                         #Si une suite est lancée
                         while compteur>0:
-                            if ligne+compteur<taille_ligne and colonne-compteur<0:
+                            if ligne+compteur<=taille_ligne and colonne-compteur>=0:
                                 if self._plateau[ligne+compteur][colonne-compteur]==Marqueur and self._plateau[ligne+compteur][colonne-compteur].getJoueur()==joueur:
                                     ligne_alignement.append([ligne,colonne])
                                     compteur+=1
@@ -212,7 +212,9 @@ class Grille:
                 Le joueur auquel appartenait l'alignement
             Si le marqueur fait bien partie d'un alignement, retirer cet alignement
         """
-        if CPU==False:
+        #Connaître à qui appartient le pion
+        joueur=self._plateau[x,y].getJoueur()
+        if joueur==1 or (joueur==2 and CPU==False):
             #Si le joueur n'a pas séléctionné un de ses marqueurs
             if self._plateau[x,y]!=Marqueur:
                 return False
@@ -221,15 +223,13 @@ class Grille:
                 for liste in listes:
                     if x in liste and y in liste:
                         alignement=listes
-            #Connaître à qui appartient le pion
-            joueur=self._plateau[x,y].getJoueur()
             #Retirer tous les marqueurs aux emplacements correspondants
             for positions in alignement:
                 self._plateau[positions[0]][positions[1]]=0
             #Le joueur à qui appartenait le marqueur sélectionne un anneau à retirer
             return joueur
         #S'il appartient à un CPU
-        if CPU==True:
+        if CPU==True and joueur==2:
             #Trouver un alignement appartenant au CPU
             for listes in tableau_alignement:
                 for liste in listes:
@@ -245,6 +245,7 @@ class Grille:
                         #Augmenter le compteur d'anneaux retirés du CPU
                         self.anneau_retiréJ2+=1
                         self._plateau[ligne][colonne]=0
+        return 2
 
 class Jeu:
     def __init__(self,blitz):
