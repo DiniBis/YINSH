@@ -13,7 +13,7 @@ def boucle_de_jeu(blitz):
     plateau=Grille()
     #chaque joueur place ses 5 anneaux
     tourJoueur=1
-    afficher_plateau(plateau._plateau, tourJoueur)
+    afficher_plateau(plateau._plateau, tourJoueur, 1)
     for i in range(10):
         x,y = clic()
         est_place=plateau.placerAnneau(tourJoueur,x,y)
@@ -21,10 +21,11 @@ def boucle_de_jeu(blitz):
             x,y = clic()
             est_place=plateau.placerAnneau(tourJoueur,x,y)
         tourJoueur = 1 if tourJoueur == 2 else 2
-        afficher_plateau(plateau._plateau, tourJoueur)
+        afficher_plateau(plateau._plateau, tourJoueur, 1)
 
     #boucle principale
     while victoire(plateau.anneau_retiréJ1, plateau.anneau_retiréJ2, blitz)==False:
+        afficher_plateau(plateau._plateau, tourJoueur, 2)
         #INPUT de X et Y par le clic
         x,y = clic()
         #Le joueur du tour choisis un anneau qui sera déplacé
@@ -32,7 +33,7 @@ def boucle_de_jeu(blitz):
         while liste==False:
             x, y = clic()
             liste=plateau.deplacementPossible(tourJoueur,x,y)
-        afficher_plateau(plateau._plateau, tourJoueur)
+        afficher_plateau(plateau._plateau, tourJoueur, 2)
         #INPUT de nouvX et nouvY (un emplacement valide pour le déplacement de l'anneau) par le clic
         nouv_x, nouv_y = clic()
         res=plateau.deplacerAnneau(tourJoueur,liste,x,y,nouv_x,nouv_y)
@@ -47,19 +48,20 @@ def boucle_de_jeu(blitz):
             res=Grille.retirer_alignement(tableau_alignement, x, y, False)
             #res est le numéro du joueur qui doit retirer son anneau
             if res==1:
+                afficher_plateau(plateau._plateau, tourJoueur, 3)
                 #prendre un input de joueur et si c'est l'un de ses anneaux le retirer:
                 x, y = clic()
                 if isinstance(plateau._plateau[x][y],Anneau) and plateau._plateau[x][y].getJoueur()==1:
                     plateau._plateau[x][y]=0
                     plateau.anneau_retiréJ1+=1
             elif res==2:
+                afficher_plateau(plateau._plateau, tourJoueur, 3)
                 #idem pour J2
                 x, y = clic()
                 if isinstance(plateau._plateau[x][y],Anneau) and plateau._plateau[x][y].getJoueur()==2:
                     plateau._plateau[x][y]=0
                     plateau.anneau_retiréJ2+=1
         tourJoueur=1 if tourJoueur==2 else 2
-        afficher_plateau(plateau._plateau, tourJoueur)
     return plateau.anneau_retiréJ1, plateau.anneau_retiréJ2 #si la condition de victoire est remplie, envoyer les resultat pour l'écran de fin
 
 # Pour affronter un bot
