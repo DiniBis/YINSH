@@ -37,9 +37,9 @@ def boucle_de_jeu(blitz):
         nouv_x, nouv_y = clic()
         res=plateau.deplacerAnneau(tourJoueur,liste,x,y,nouv_x,nouv_y)
         while res==False:
-            x, y = clic()
+            nouv_x, nouv_y = clic()
             res=plateau.deplacerAnneau(tourJoueur,liste,x,y,nouv_x,nouv_y)
-        afficher_plateau(plateau._plateau, tourJoueur)
+        print(plateau._plateau[x][y].getJoueur())
         #Regarder s'il y a un alignement
         tableau_alignement=plateau.alignement()
         #Si des alignements sont enregistrés
@@ -59,6 +59,7 @@ def boucle_de_jeu(blitz):
                     plateau._plateau[x][y]=0
                     plateau.anneau_retiréJ2+=1
         tourJoueur=1 if tourJoueur==2 else 2
+        afficher_plateau(plateau._plateau, tourJoueur)
     return plateau.anneau_retiréJ1, plateau.anneau_retiréJ2 #si la condition de victoire est remplie, envoyer les resultat pour l'écran de fin
 
 # Pour affronter un bot
