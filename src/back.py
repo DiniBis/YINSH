@@ -102,7 +102,7 @@ class Grille:
             #parcourir tous les emplacements entre initial / final, si c'est un marqueur: retourner
             for ligne in range(ancienX,nouveauX,pas_x):
                 for colonne in range(ancienY,nouveauY,pas_y):
-                    if self._plateau[ligne][colonne]==Marqueur:
+                    if isinstance(self._plateau[ligne][colonne],Marqueur):
                         self._plateau[ligne][colonne].inverser()
         else:
             return False
@@ -124,13 +124,11 @@ class Grille:
 
     def alignement(self):
         """
-            Vérifier s'il y a un alignement et faire les actions en conséquence
+            Vérifier s'il y a un alignement
             OUT : La liste des alignements
         """
         taille_ligne=len(self._plateau)
         taille_colonne=len(self._plateau[0])
-        alignementJ1=0
-        alignementJ2=0
         tableau_alignement=[]
         for joueur in range(1,2):
             compteur=0
@@ -141,7 +139,7 @@ class Grille:
                     for ligne in range(0, taille_ligne, 2):
                         ligne_alignement=[]
                         #Si c'est un marqueur du joueur, incrémenter le compteur, sinon relancer le compteur
-                        if self._plateau[ligne][colonne]==Marqueur and self._plateau[ligne][colonne].getJoueur()==joueur:
+                        if isinstance(self._plateau[ligne][colonne],Marqueur) and self._plateau[ligne][colonne].getJoueur()==joueur:
                             ligne_alignement.append([ligne,colonne])
                             compteur+=1
                             if compteur>=5:
@@ -152,7 +150,7 @@ class Grille:
                 #Si c'est une colonne impaire, commencer à 1
                 else:
                     for ligne in range(1, taille_ligne, 2):
-                        if self._plateau[ligne][colonne]==Marqueur and self._plateau[ligne][colonne].getJoueur()==joueur:
+                        if isinstance(self._plateau[ligne][colonne],Marqueur) and self._plateau[ligne][colonne].getJoueur()==joueur:
                             ligne_alignement.append([ligne,colonne])
                             compteur+=1
                             if compteur>=5:
@@ -165,12 +163,12 @@ class Grille:
                 compteur=0
                 for colonne in range(taille_colonne):
                     #Si on tombe sur un marqueur du joueur
-                    if self._plateau[taille_ligne][taille_colonne]==Marqueur and self._plateau[ligne][colonne].getJoueur()==joueur:
+                    if isinstance(self._plateau[taille_ligne][taille_colonne],Marqueur) and self._plateau[ligne][colonne].getJoueur()==joueur:
                         compteur+=1
                         #Si une suite est lancée
                         while compteur>0:
                             if ligne+compteur<=taille_ligne and colonne+compteur<=taille_colonne:
-                                if self._plateau[ligne+compteur][colonne+compteur]==Marqueur and self._plateau[ligne+compteur][colonne+compteur].getJoueur()==joueur:
+                                if isinstance(self._plateau[ligne+compteur][colonne+compteur],Marqueur) and self._plateau[ligne+compteur][colonne+compteur].getJoueur()==joueur:
                                     ligne_alignement.append([ligne,colonne])
                                     compteur+=1
                                     if compteur>=5:
@@ -183,12 +181,12 @@ class Grille:
                 compteur=0
                 for colonne in range(taille_colonne,0,-1):
                     #Si on tombe sur un marqueur du joueur
-                    if self._plateau[taille_ligne][taille_colonne]==Marqueur and self._plateau[ligne][colonne].getJoueur()==joueur:
+                    if isinstance(self._plateau[taille_ligne][taille_colonne],Marqueur) and self._plateau[ligne][colonne].getJoueur()==joueur:
                         compteur+=1
                         #Si une suite est lancée
                         while compteur>0:
                             if ligne+compteur<=taille_ligne and colonne-compteur>=0:
-                                if self._plateau[ligne+compteur][colonne-compteur]==Marqueur and self._plateau[ligne+compteur][colonne-compteur].getJoueur()==joueur:
+                                if isinstance(self._plateau[ligne+compteur][colonne-compteur],Marqueur) and self._plateau[ligne+compteur][colonne-compteur].getJoueur()==joueur:
                                     ligne_alignement.append([ligne,colonne])
                                     compteur+=1
                                     if compteur>=5:
@@ -234,7 +232,7 @@ def retirer_alignement(self, tableau_alignement, x, y, CPU):
         #Retirer le premier anneau du CPU trouvé
         for ligne in range(len(self._plateau)):
             for colonne in range (len(self._plateau[0])):
-                if self._plateau[ligne][colonne]==Anneau and self._plateau[ligne][colonne].getJoueur()==2:
+                if isinstance(self._plateau[ligne][colonne],Anneau) and self._plateau[ligne][colonne].getJoueur()==2:
                     #Augmenter le compteur d'anneaux retirés du CPU
                     self.anneau_retiréJ2+=1
                     self._plateau[ligne][colonne]=0
