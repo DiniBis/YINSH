@@ -89,7 +89,7 @@ def dessiner_anneau(mouse_x,mouse_y):
         pygame.draw.circle(window, couleur_joueur(tour_joueur), pos, 20, 5)
         pygame.draw.circle(window, black, pos, 20, 1)
         pygame.draw.circle(window, black, pos, 15, 1)
-        return True
+
 def anneau_possede(mouse_x,mouse_y):
     grille_x = (mouse_x - plateau_x) // case_width
     grille_y = (mouse_y - plateau_y) // case_height
@@ -100,58 +100,10 @@ def anneau_possede(mouse_x,mouse_y):
             pygame.draw.circle(window, couleur_joueur(tour_joueur), pos, 20, 6)
             return True
 
-def deplacement_anneau(mouse_x,mouse_y,mouse_x2,mouse_y2):
-    grille_x = (mouse_x - plateau_x) // case_width
-    grille_y = (mouse_y - plateau_y) // case_height
-    grille_x2 = (mouse_x2 - plateau_x) // case_width
-    grille_y2 = (mouse_y2 - plateau_y) // case_height
-
-    if 0 <= grille_x2 < len(grille[0]) and 0 <= grille_y2 < len(grille):
-        if grille[grille_y2][grille_x2] == 0:
-            if grille_y2 > grille_y and grille_x2 > grille_x:
-                for i in range(grille_x, grille_x2, 1):
-                    for j in range(grille_y, grille_y2, 12):
-                        cercle_pos = grille_to_window_coords(j, i)
-                        cercles.append(cercle_pos)
-                for pos in cercles:
-                    pygame.draw.circle(window, couleur_joueur(tour_joueur), pos, 20)
-        return True
 
 
 
 
 afficher_plateau()
 
-
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_x, mouse_y = event.pos
-            if placement == 10:
-                if anneau_possede(mouse_x,mouse_y):
-                    print("anneau possédé")
-                    pygame.event.clear()
-                    pygame.event.wait()
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        mouse_x2, mouse_y2 = event.pos
-                        deplacement_anneau(mouse_x,mouse_y,mouse_x2,mouse_y2)
-                        if deplacement_anneau(mouse_x,mouse_y,mouse_x2,mouse_y2):
-                            print("déplacement de l'anneau")
-                            tour_joueur = 3 - tour_joueur
-
-
-
-            else:
-                dessiner_anneau(mouse_x, mouse_y)
-                if dessiner_anneau(mouse_x, mouse_y):
-                    tour_joueur = 3 - tour_joueur
-                    placement += 1
-                cercles = []
-
-
-    afficher_ath(tour_joueur)
-    pygame.display.update()
 
