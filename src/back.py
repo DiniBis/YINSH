@@ -87,29 +87,28 @@ class Grille:
         else:
             # La case choisie n'est pas un anneau du joueur
             return False
-
-    def deplacerAnneau(self, joueur, liste, ancienX, ancienY, nouveauX, nouveauY):
+            
+    def deplacerAnneau(self,joueur,liste,ancienX,ancienY,nouveauX,nouveauY):
         """
             IN : L'emplacement vers lequel l'anneau se déplace
             Modifie l'emplacement d'un anneau aux coordonnées rentréees (si elles sont valides)
             Effectue le retournement des marqueurs entre les 2 emplacements
         """
-        # Si le nouvel emplacement est une case possible (fait partie de la liste)
-        n_emplacement = [nouveauX,nouveauY]
+        #Si le nouvel emplacement est une case possible (fait partie de la liste)
+        n_emplacement=[nouveauX,nouveauY]
         if n_emplacement in liste:
-            # Met un marqueur à l'ancien emplacement de l'anneau
-            self._plateau[ancienX][ancienY] = Marqueur(joueur)
-            # Effectuer le déplacement
-            self._plateau[nouveauX][nouveauY] = Anneau(joueur)
-            # Connaître la direction pour aller de l'ancien au nouvel emplacement
-            pas_x = -1 if (nouveauX - ancienX) < 0 else 1
-            pas_y = -1 if (nouveauY - ancienY) < 0 else 1
-            # parcourir tous les emplacements entre initial / final, si c'est un marqueur: retourner
-            for ligne in range(ancienX, nouveauX, pas_x):
-                for colonne in range(ancienY, nouveauY, pas_y):
-                    if isinstance(self._plateau[ligne][colonne], Marqueur):
-                        #self._plateau[ligne][colonne].inverser()
-                        pass
+            #Met un marqueur à l'ancien emplacement de l'anneau
+            self._plateau[ancienX][ancienY]=Marqueur(joueur)
+            #Effectuer le déplacement
+            self._plateau[nouveauX][nouveauY]=Anneau(joueur)
+            #Connaître la direction pour aller de l'ancien au nouvel emplacement
+            pas_x=-1 if (nouveauX - ancienX) < 0 else 1
+            pas_y=-1 if (nouveauY - ancienY) < 0 else 1
+            #parcourir tous les emplacements entre initial / final, si c'est un marqueur: retourner
+            for ligne in range(ancienX+pas_x,nouveauX,pas_x):
+                for colonne in range(ancienY+pas_y,nouveauY,pas_y):
+                    if isinstance(self._plateau[ligne][colonne],Marqueur):
+                        self._plateau[ligne][colonne].inverser()
         else:
             return False
 
