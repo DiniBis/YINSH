@@ -13,6 +13,14 @@ black = [0, 0, 0]
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Yinsh 2049')
 
+j1_victory = pygame.image.load('Victory.jpg')
+j2_victory = pygame.image.load('Defeat.jpg')
+
+clic_sound = pygame.mixer.Sound("./sound/sfx/Collide 2.wav")
+victory_sound = pygame.mixer.Sound("./sound/sfx/Victory Jingle.wav")
+defeat_sound = pygame.mixer.Sound("./sound/sfx/Defeat Jingle.wav")
+background_music = pygame.mixer.music.load('./sound/soundtrack/Game.wav')
+
 plateau_image = pygame.image.load('board.svg')
 plateau_width, plateau_height = plateau_image.get_size()
 plateau_x = (WINDOW_WIDTH - plateau_width) // 2
@@ -88,8 +96,47 @@ def clic():
                 mouse_x, mouse_y = event.pos
                 x = (mouse_x - plateau_x) // case_width
                 y = (mouse_y - plateau_y) // case_height
+                pygame.mixer.Sound.play(clic_sound)
+                pygame.mixer.music.stop()
 
     if 0 <= y <= 19 and 0 <= x <= 11:
         return y,x
+
+
     else:
         return 0, 0
+
+def Ecran_resultats_multi(anneaux_J1,anneaux_J2):
+    if anneaux_J1 > anneaux_J2:
+        window.blit(j1_victory,[0,0])
+        text = font.render(f"Victoire du joueur 1", True, white)
+        text_rect = text.get_rect(center=(400, 300))
+        window.blit(text, text_rect)
+        pygame.mixer.Sound.play(victory_sound)
+        pygame.mixer.music.stop()
+    else:
+        window.blit(j2_victory,[0,0])
+        text = font.render(f"Victoire du joueur 2", True, white)
+        text_rect = text.get_rect(center=(400, 300))
+        window.blit(text, text_rect)
+        pygame.mixer.Sound.play(victory_sound)
+        pygame.mixer.music.stop()
+    pygame.display.update()
+
+
+def Ecren_resultats_solo(anneaux_J1,anneaux_J2):
+    if anneaux_J1 > anneaux_J2:
+        window.blit(j1_victory,[0,0])
+        text = font.render(f"Victoire !", True, white)
+        text_rect = text.get_rect(center=(400, 300))
+        pygame.mixer.Sound.play(victory_sound)
+        pygame.mixer.music.stop()
+        window.blit(text, text_rect)
+    else:
+        window.blit(j2_victory,[0,0])
+        text = font.render(f"Défaite", True, white)
+        text_rect = text.get_rect(center=(400, 300))
+        window.blit(text, text_rect)
+        pygame.mixer.Sound.play(defeat_sound)
+        pygame.mixer.music.stop()
+    pygame.display.update()
