@@ -95,7 +95,7 @@ class Grille:
             Effectue le retournement des marqueurs entre les 2 emplacements
         """
         # Si le nouvel emplacement est une case possible (fait partie de la liste)
-        n_emplacement = [nouveauX][nouveauY]
+        n_emplacement = [nouveauX,nouveauY]
         if n_emplacement in liste:
             # Met un marqueur à l'ancien emplacement de l'anneau
             self._plateau[ancienX][ancienY] = Marqueur(joueur)
@@ -108,7 +108,8 @@ class Grille:
             for ligne in range(ancienX, nouveauX, pas_x):
                 for colonne in range(ancienY, nouveauY, pas_y):
                     if isinstance(self._plateau[ligne][colonne], Marqueur):
-                        self._plateau[ligne][colonne].inverser()
+                        #self._plateau[ligne][colonne].inverser()
+                        pass
         else:
             return False
 
