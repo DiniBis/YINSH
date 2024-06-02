@@ -205,47 +205,48 @@ class Grille:
                                     compteur=0
         return tableau_alignement
 
-    def retirer_alignement(self, tableau_alignement, x, y, CPU):
-        """
-            IN : Les listes d'alignements des 2 joueurs, les coordonnées d'un marqueur, la présence d'un CPU
-            OUT : False si le marqueur ne fait pas partie d'un alignement,
-                Le joueur auquel appartenait l'alignement
-            Si le marqueur fait bien partie d'un alignement, retirer cet alignement
-        """
-        #Connaître à qui appartient le pion
-        joueur=self._plateau[x,y].getJoueur()
-        if joueur==1 or (joueur==2 and CPU==False):
-            #Si le joueur n'a pas séléctionné un de ses marqueurs
-            if self._plateau[x,y]!=Marqueur:
-                return False
-            #Vérifier que x,y soit dans l'une des listes
-            for listes in tableau_alignement:
-                for liste in listes:
-                    if x in liste and y in liste:
-                        alignement=listes
-            #Retirer tous les marqueurs aux emplacements correspondants
-            for positions in alignement:
-                self._plateau[positions[0]][positions[1]]=0
-            #Le joueur à qui appartenait le marqueur sélectionne un anneau à retirer
-            return joueur
-        #S'il appartient à un CPU
-        if CPU==True and joueur==2:
-            #Trouver un alignement appartenant au CPU
-            for listes in tableau_alignement:
-                for liste in listes:
-                    if self._plateau[liste[0],liste[1]].getJoueur()==2:
-                        alignement=listes
-            #Retirer tous les marqueurs aux emplacements correspondants
-            for positions in alignement:
-                self._plateau[positions[0]][positions[1]]=0
-            #Retirer le premier anneau du CPU trouvé
-            for ligne in range(len(self._plateau)):
-                for colonne in range (len(self._plateau[0])):
-                    if self._plateau[ligne][colonne]==Anneau and self._plateau[ligne][colonne].getJoueur()==2:
-                        #Augmenter le compteur d'anneaux retirés du CPU
-                        self.anneau_retiréJ2+=1
-                        self._plateau[ligne][colonne]=0
-        return 2
+def retirer_alignement(self, tableau_alignement, x, y, CPU):
+    """
+        IN : Les listes d'alignements des 2 joueurs, les coordonnées d'un marqueur, la présence d'un CPU
+        OUT : False si le marqueur ne fait pas partie d'un alignement,
+            Le joueur auquel appartenait l'alignement
+        Si le marqueur fait bien partie d'un alignement, retirer cet alignement
+    """
+    #Connaître à qui appartient le pion
+    joueur=self._plateau[x,y].getJoueur()
+    if joueur==1 or (joueur==2 and CPU==False):
+        #Si le joueur n'a pas séléctionné un de ses marqueurs
+        if self._plateau[x,y]!=Marqueur:
+            return False
+        #Vérifier que x,y soit dans l'une des listes
+        for listes in tableau_alignement:
+            for liste in listes:
+                if x in liste and y in liste:
+                    alignement=listes
+        #Retirer tous les marqueurs aux emplacements correspondants
+        for positions in alignement:
+            self._plateau[positions[0]][positions[1]]=0
+        #Le joueur à qui appartenait le marqueur sélectionne un anneau à retirer
+        return joueur
+    #S'il appartient à un CPU
+    if CPU==True:
+        #Trouver un alignement appartenant au CPU
+        for listes in tableau_alignement:
+            for liste in listes:
+                if self._plateau[liste[0],liste[1]].getJoueur()==2:
+                    alignement=listes
+        #Retirer tous les marqueurs aux emplacements correspondants
+        for positions in alignement:
+            self._plateau[positions[0]][positions[1]]=0
+        #Retirer le premier anneau du CPU trouvé
+        for ligne in range(len(self._plateau)):
+            for colonne in range (len(self._plateau[0])):
+                if self._plateau[ligne][colonne]==Anneau and self._plateau[ligne][colonne].getJoueur()==2:
+                    #Augmenter le compteur d'anneaux retirés du CPU
+                    self.anneau_retiréJ2+=1
+                    self._plateau[ligne][colonne]=0
+                    return 2
+    return False
 
 class Jeu:
     def __init__(self,blitz):
