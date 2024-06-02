@@ -6,6 +6,9 @@ pygame.init()
 largeur_fenetre = 800
 hauteur_fenetre = 600
 
+menu_music = pygame.mixer.music.load('./sound/soundtrack/Menu.wav')
+
+
 fenetre = pygame.display.set_mode((largeur_fenetre, hauteur_fenetre))
 
 pygame.display.set_caption("Yinsh 2049")
