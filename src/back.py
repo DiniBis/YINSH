@@ -133,79 +133,25 @@ class Grille:
             Vérifier s'il y a un alignement
             OUT : La liste des alignements
         """
-        taille_ligne = len(self._plateau) - 1
-        taille_colonne = len(self._plateau[0]) - 1
-        tableau_alignement = []
-        for joueur in range(1, 2):
-            compteur = 0
-            # Vérification colonne
-            for colonne in range(taille_colonne):
-                # Si c'est une colonne paire, commencer à 0
-                if colonne % 2 == 0:
-                    for ligne in range(0, taille_ligne, 2):
-                        ligne_alignement = []
-                        # Si c'est un marqueur du joueur, incrémenter le compteur, sinon relancer le compteur
-                        if isinstance(self._plateau[ligne][colonne], Marqueur) and self._plateau[ligne][
-                            colonne].getJoueur() == joueur:
-                            ligne_alignement.append([ligne, colonne])
-                            compteur += 1
-                            if compteur >= 5:
-                                tableau_alignement.append(ligne_alignement)
-                        else:
-                            ligne_alignement = []
-                            compteur = 0
-                # Si c'est une colonne impaire, commencer à 1
-                else:
-                    for ligne in range(1, taille_ligne, 2):
-                        if isinstance(self._plateau[ligne][colonne], Marqueur) and self._plateau[ligne][
-                            colonne].getJoueur() == joueur:
-                            ligne_alignement.append([ligne, colonne])
-                            compteur += 1
-                            if compteur >= 5:
-                                tableau_alignement.append(ligne_alignement)
-                        else:
-                            ligne_alignement = []
-                            compteur = 0
-            # Vérification diagonale ↙↗
-            for ligne in range(taille_ligne):
-                compteur = 0
-                for colonne in range(taille_colonne):
-                    # Si on tombe sur un marqueur du joueur
-                    if isinstance(self._plateau[taille_ligne][taille_colonne], Marqueur) and self._plateau[ligne][
-                        colonne].getJoueur() == joueur:
-                        compteur += 1
-                        # Si une suite est lancée
-                        while compteur > 0:
-                            if ligne + compteur <= taille_ligne and colonne + compteur <= taille_colonne:
-                                if isinstance(self._plateau[ligne + compteur][colonne + compteur], Marqueur) and \
-                                        self._plateau[ligne + compteur][colonne + compteur].getJoueur() == joueur:
-                                    ligne_alignement.append([ligne, colonne])
-                                    compteur += 1
-                                    if compteur >= 5:
-                                        tableau_alignement.append(ligne_alignement)
-                                else:
-                                    ligne_alignement = []
-                                    compteur = 0
-            # Vérification diagonale ↖↘
-            for ligne in range(taille_ligne):
-                compteur = 0
-                for colonne in range(taille_colonne, 0, -1):
-                    # Si on tombe sur un marqueur du joueur
-                    if isinstance(self._plateau[taille_ligne][taille_colonne], Marqueur) and self._plateau[ligne][
-                        colonne].getJoueur() == joueur:
-                        compteur += 1
-                        # Si une suite est lancée
-                        while compteur > 0:
-                            if ligne + compteur <= taille_ligne and colonne - compteur >= 0:
-                                if isinstance(self._plateau[ligne + compteur][colonne - compteur], Marqueur) and \
-                                        self._plateau[ligne + compteur][colonne - compteur].getJoueur() == joueur:
-                                    ligne_alignement.append([ligne, colonne])
-                                    compteur += 1
-                                    if compteur >= 5:
-                                        tableau_alignement.append(ligne_alignement)
-                                else:
-                                    ligne_alignement = []
-                                    compteur = 0
+        largeur=len(self._plateau[0])
+        hauteur=len(self._plateau)
+        variations=[(-2,0),(2,0),(-1,-1),(-1,1),(1,-1),(1,1)]
+        tableau_alignement=[]
+        for ligne in range(hauteur):
+            for colonne in range(largeur):
+                liste_alignement=[]
+                if isinstance(self._plateau[ligne][colonne],Marqueur):
+                    joueur=self._plateau[ligne][colonne].getJoueur()
+                    liste_alignement.append([ligne,colonne])
+                    for var_x, var_y in variations:
+                        nouv_x, nouv_y = ligne+var_x, ligne+var_y
+                        while 0<=nouv_x<hauteur and 0<=nouv_y<largeur and isinstance(self._plateau[nouv_x][nouv_y], Marqueur) and self._plateau[nouv_x][nouv_y].getJoueur==joueur:
+                            nouv_x+=var_x
+                            nouv_y+=var_y
+                            liste_alignement.append([ligne,colonne])
+                            if len(liste_alignement)==5:
+                                tableau_alignement.append(liste_alignement)
+                        liste_alignement=[]
         return tableau_alignement
 
     def retirer_alignement(self, tableau_alignement, x, y, CPU):
