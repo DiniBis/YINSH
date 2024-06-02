@@ -61,30 +61,23 @@ class Grille:
         largeur=len(self._plateau[0])
         hauteur=len(self._plateau)
         #Selection de l'anneau à déplacer (la selection doit être un anneau)
-        if self._plateau[x][y]==Anneau and self._plateau[x][y].getJoueur()==joueur:
+        if isinstance(self._plateau[x][y],Anneau) and self._plateau[x][y].getJoueur()==joueur:
             liste=[]
             #Regarder aux directions voisines: ↙↓↘ ↖↑↗
-            for var_x in range(-1,1):
-                for var_y in range(-1,1):
-                    #dans les plages du plateau
-                    if 0<= x+var_x <= hauteur and 0 <= y+var_y <= largeur:
-                        #si c'est une case disponible
-                        if self._plateau[x+var_x][y+var_y]==self._plateau==0:
-                            #l'ajouter à la liste 
-                            liste.append([x+var_x][y+var_y])
-                            #Continuer dans la direction jusqu'à ce que la case soit -1, un autre objet ou la limite
-                            suite=2
-                            while 0<=x+var_x*suite<=hauteur and 0<=y+var_y*suite<=largeur and self._plateau[x+var_x*suite][y+var_y*suite]==0:
-                                liste.append([x+var_x*suite][y+var_y*suite])
-                                suite+=1
-                        #si c'est un marqueur
-                        if self._plateau[x+var_x][y+var_y]==Marqueur:
-                            #Continuer dans la direction du voisin direct jusqu'à ce qu'il y ait autre chose qu'un marqueur
-                            suite=2
-                            while 0<=x+var_x*suite<=hauteur and 0<=y+var_y*suite<=largeur and self._plateau[x+var_x*suite][y+var_y*suite]==Marqueur:
-                                suite+=1
-                            #La dernière case après la suite de marqueurs est ajoutée à la liste des emplacements possibles
-                            liste.append([x+var_x*suite][y+var_y*suite])
+            variations=[(-2,0),(2,0),(-1,-1),(-1,1),(1,-1),(1,1)]
+            for var_x, var_y in variations:
+                nouv_x, nouv_y = x+var_x, y+var_y
+                #dans les plages du plateau, si c'est une case disponible
+                while 0<=nouv_x<hauteur and 0<=nouv_y<largeur and self._plateau[nouv_x][nouv_y]==0:
+                    liste.append([nouv_x,nouv_y])
+                    nouv_x+=var_x
+                    nouv_y+=var_y
+                #si c'est un marqueur
+                if 0<=nouv_x<hauteur and 0<=nouv_y<largeur and isinstance(self._plateau[nouv_x][nouv_y], Marqueur):
+                    nouv_x+=var_x
+                    nouv_y+=var_y
+                    if 0<=nouv_x<hauteur and 0<=nouv_y<largeur and self._plateau[nouv_x][nouv_y]==0:
+                        liste.append([nouv_x,nouv_y])
             return liste
         else:
             #La case choisie n'est pas un anneau du joueur
