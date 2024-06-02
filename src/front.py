@@ -29,9 +29,9 @@ case_height = plateau_height // 19
 tour_joueur = 1
 
 
-def afficher_plateau(plateau, tour_joueur):
+def afficher_plateau(plateau, tour_joueur, situation):
     window.fill(black)
-    afficher_ath(tour_joueur)
+    afficher_ath(tour_joueur,situation)
     window.blit(plateau_image, (plateau_x, plateau_y))
     for i in range(len(plateau)):
         for j in range(len(plateau[0])):
@@ -51,14 +51,23 @@ def afficher_plateau(plateau, tour_joueur):
 def couleur_joueur(tour_joueur):
     return green if tour_joueur == 1 else dark_green
 
-def afficher_ath(tour_joueur):
-    text = font.render(f"Tour du joueur {3 - tour_joueur}", True, black)
-    text_rect = text.get_rect(center=(150, 50))
-    window.blit(text, text_rect)
-
+def afficher_ath(tour_joueur, situation):
     text = font.render(f"Tour du joueur {tour_joueur}", True, white)
     text_rect = text.get_rect(center=(150, 50))
     window.blit(text, text_rect)
+
+    if situation == 1:
+        text = font.render(f"Placez vos anneaux", True, white)
+        text_rect = text.get_rect(center=(400, 550))
+        window.blit(text, text_rect)
+    elif situation == 2:
+        text = font.render(f"Déplacez un de vos anneaux", True, white)
+        text_rect = text.get_rect(center=(400, 550))
+        window.blit(text, text_rect)
+    elif situation == 3:
+        text = font.render(f"Supprimez un anneau adverse", True, white)
+        text_rect = text.get_rect(center=(400, 550))
+        window.blit(text, text_rect)
 
 
 def grille_to_window_coords(ligne, colonne):
