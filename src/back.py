@@ -73,7 +73,7 @@ class Grille:
                     nouv_x+=var_x
                     nouv_y+=var_y
                 #si c'est un marqueur
-                if 0<=nouv_x<hauteur and 0<=nouv_y<largeur and isinstance(self._plateau[nouv_x][nouv_y], Marqueur):
+                while 0<=nouv_x<hauteur and 0<=nouv_y<largeur and isinstance(self._plateau[nouv_x][nouv_y], Marqueur):
                     nouv_x+=var_x
                     nouv_y+=var_y
                     if 0<=nouv_x<hauteur and 0<=nouv_y<largeur and self._plateau[nouv_x][nouv_y]==0:
