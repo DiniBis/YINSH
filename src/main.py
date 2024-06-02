@@ -103,13 +103,14 @@ def versus_cpu():
         #Regarder s'il y a un alignement
         tableau_alignement=plateau.alignement()
         #Si des alignements sont enregistrés
-        if tourJoueur==1 and len(tableau_alignement)>0:
-            res=jeu.retirer_alignement(tableau_alignement, x, y, False)
-            if res!=False:
-                #res est le numéro du joueur qui doit retirer son anneau
-                #prendre un input de joueur, si c'est l'un de ses anneaux:
+        if len(tableau_alignement)>0:
+            res=jeu.retirer_alignement(tableau_alignement, x, y, True)
+            if res==1:
+                #prendre un input de joueur et si c'est l'un de ses anneaux le retirer:
+                x, y = 0, 0
+                if plateau._plateau[x][y]==Anneau and plateau._plateau[x][y].getJoueur()==1:
+                    plateau._plateau[x][y]=0
                     plateau.anneau_retiréJ1+=1
-        elif tourJoueur==2 and len(tableau_alignement)>0:
-            jeu.retirer_alignement(tableau_alignement, x, y, True)
+            #pas d'opérations pour le CPU ici, les actions sont déjà réalisées dans la fonction
         tourJoueur=1 if tourJoueur==2 else 2
     return plateau.anneau_retiréJ1, plateau.anneau_retiréJ2 #si la condition de victoire est remplie, envoyer les resultat pour l'écran de fin
