@@ -102,15 +102,18 @@ class Grille:
             #Effectuer le déplacement
             self._plateau[nouveauX][nouveauY]=Anneau(joueur)
             #Connaître la direction pour aller de l'ancien au nouvel emplacement
-            pas_x=-1 if (nouveauX - ancienX) < 0 else 1
-            pas_y=-1 if (nouveauY - ancienY) < 0 else 1
+            pas_x=-1 if nouveauX < ancienX else 1
+            pas_x=0 if ancienX==nouveauX else pas_x
+            pas_y=-1 if nouveauY < ancienY else 1
+            pas_y=0 if ancienY==nouveauY else pas_y
             #parcourir tous les emplacements entre initial / final, si c'est un marqueur: retourner
             ligne=ancienX
             colonne=ancienY
-            while ligne!=nouveauX and colonne!=nouveauY:
+            while colonne!=nouveauY or ligne!=nouveauX:
                 ligne+=pas_x
                 colonne+=pas_y
-                self._plateau[ligne][colonne].inverser()
+                if isinstance(self._plateau[ligne][colonne],Marqueur):
+                    self._plateau[ligne][colonne].inverser()
         else:
             return False
 
