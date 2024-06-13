@@ -105,10 +105,12 @@ class Grille:
             pas_x=-1 if (nouveauX - ancienX) < 0 else 1
             pas_y=-1 if (nouveauY - ancienY) < 0 else 1
             #parcourir tous les emplacements entre initial / final, si c'est un marqueur: retourner
-            for ligne in range(ancienX+pas_x,nouveauX,pas_x):
-                for colonne in range(ancienY+pas_y,nouveauY,pas_y):
-                    if isinstance(self._plateau[ligne][colonne],Marqueur):
-                        self._plateau[ligne][colonne].inverser()
+            ligne=ancienX
+            colonne=ancienY
+            while ligne!=nouveauX and colonne!=nouveauY:
+                ligne+=pas_x
+                colonne+=pas_y
+                self._plateau[ligne][colonne].inverser()
         else:
             return False
 
@@ -197,9 +199,6 @@ class Grille:
                         return 2
         return False
 
-
-
-
 def victoire(alignementJ1, alignementJ2, blitz):
     if blitz == True:
         if alignementJ1 > 0:
@@ -212,7 +211,6 @@ def victoire(alignementJ1, alignementJ2, blitz):
         elif alignementJ2 > 2:
             return 2
     return False
-
 
 def coordonnee_alea(max_x, max_y):
     """
